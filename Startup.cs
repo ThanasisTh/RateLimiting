@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RateLimiting.Security.Services;
 using RateLimiting.Security.JWT;
-using Microsoft.Extensions.Hosting;
 using RateLimiting.Models.Configuration;
 
 namespace RateLimiting
@@ -29,6 +28,8 @@ namespace RateLimiting
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            
+            services.AddScoped<IRateLimitService, RateLimitService>();
         }
 
         // configure the HTTP request pipeline

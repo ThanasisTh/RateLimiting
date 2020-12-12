@@ -29,16 +29,7 @@ namespace RateLimiting.Controllers
         // GET: /random
         [JwtAuth]
         [HttpGet]
-        public async Task<IActionResult> GetRandom()
-        {
-            await Task.Delay(100);
-            return Ok(new Item());
-        }
-
-        // GET: /random/5
-        [JwtAuth]
-        [HttpGet("{len}")]
-        public async Task<IActionResult> GetRandom(long len)
+        public async Task<IActionResult> GetRandom(long len = 32)
         {
             await Task.Delay(100);
             return Ok(new Item(len));

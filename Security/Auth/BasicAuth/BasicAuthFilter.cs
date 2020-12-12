@@ -22,6 +22,7 @@ namespace RateLimiting.Security.Auth.BasicAuth
                 throw new ArgumentNullException(nameof(realm), @"Please provide a non-empty realm value.");
             }
         }
+        
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             try
