@@ -4,6 +4,7 @@ using RateLimiting.Models;
 using RateLimiting.Security.Services;
 using RateLimiting.Security.Auth.BasicAuth;
 using RateLimiting.Security.Auth.JwtAuth;
+using RateLimiting.Models.Random;
 
 namespace RateLimiting.Controllers
 {
@@ -13,10 +14,18 @@ namespace RateLimiting.Controllers
     {
         // private readonly RateLimitingContext _context;
         private IUserService _userService;
+        private IRateLimitService _rateLimitService;
+        public IRateLimitService RateLimitService {
+            get{
+                return _rateLimitService;
+            }
+            set {}
+        }
         
-        public RandomController(IUserService userService)
+        public RandomController(IUserService userService, IRateLimitService rateLimitService)
         {
             _userService = userService;
+            _rateLimitService = rateLimitService;
         }
 
         [BasicAuth]
@@ -32,7 +41,7 @@ namespace RateLimiting.Controllers
         public async Task<IActionResult> GetRandom(long len = 32)
         {
             await Task.Delay(100);
-            return Ok(new Item(len));
+            return Ok(new { message = "Requested rate spent :)", random = new Item(len).random});
         }
 
     }

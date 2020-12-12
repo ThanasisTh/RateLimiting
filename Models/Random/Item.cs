@@ -1,10 +1,10 @@
 using System;
 
-namespace RateLimiting.Models
+namespace RateLimiting.Models.Random
 {
     public class Item
     {
-        private readonly Random r = new Random();
+        private readonly System.Random r = new System.Random();
         private byte[] randBytes;
         public Item(long len = 32) {
             randBytes = new byte[len];

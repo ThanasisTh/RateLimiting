@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using RateLimiting.Security.Services;
 using RateLimiting.Security.JWT;
 using RateLimiting.Models.Configuration;
+using Microsoft.EntityFrameworkCore;
+using RateLimiting.Data;
 
 namespace RateLimiting
 {
@@ -21,6 +23,9 @@ namespace RateLimiting
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+
+            services.AddDbContext<RateLimitingContext>(opt => opt.UseInMemoryDatabase("RateLimitingList"));
+            
             services.AddControllers();
 
             // configure strongly typed settings object

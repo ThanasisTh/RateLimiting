@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using RateLimiting.Models.Authentication;
 using RateLimiting.Security.Services;
+using RateLimiting.Data;
 using System;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+
 
 namespace RateLimiting.Security.Auth.BasicAuth 
 {

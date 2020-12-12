@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using RateLimiting.Models;
+using RateLimiting.Models.Random;
+using RateLimiting.Security.Entities;
 
+namespace RateLimiting.Data {
     public class RateLimitingContext : DbContext
     {
         public RateLimitingContext (DbContextOptions<RateLimitingContext> options)
@@ -9,4 +11,6 @@ using RateLimiting.Models;
         }
 
         public DbSet<Item> Item { get; set; }
+        public DbSet<User> User {get; set;}
     }
+}

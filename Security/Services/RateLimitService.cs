@@ -14,7 +14,7 @@ namespace RateLimiting.Security.Services
         public RateLimitService() {}
 
         public int processRequest(int bytes) {
-            if (_bandwidth > bytes) {
+            if (_bandwidth >= bytes) {
                 _bandwidth -= bytes;
                 return _bandwidth;
             };

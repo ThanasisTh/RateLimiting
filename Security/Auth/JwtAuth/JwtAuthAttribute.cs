@@ -19,11 +19,18 @@ namespace RateLimiting.Security.Auth.JwtAuth
             var rateLimitService = context.HttpContext.RequestServices.GetRequiredService<IRateLimitService>(); 
             try {
                 len = Int32.Parse(context.HttpContext.Request.Query["len"]);
+                if (len > 0) {
+                    int remainingBandwidth = rateLimitService.processRequest(len);
+                    if (remainingBandwidth < 0) {
+                        ReturnRateExceededResult(context, remainingBandwidth);
+                        return;
+                    }
+                    context.HttpContext.Response.Headers["X-Rate-Limit"] = remainingBandwidth.ToString();
+                }
             }
             catch (FormatException) {
                 ReturnBadResult(context);
             }
-            rateLimitService.processRequest(len);
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -40,5 +47,10 @@ namespace RateLimiting.Security.Auth.JwtAuth
         {
             context.Result = new BadRequestResult();
         }
+
+        private void ReturnRateExceededResult(ActionExecutingContext context, int remainingBandwidth) {
+            context.Result = new ObjectResult("Request exceeds remaining rate limit :(");
+        }
+        
     }
 }
