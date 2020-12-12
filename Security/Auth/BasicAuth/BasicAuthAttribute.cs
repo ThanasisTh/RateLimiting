@@ -9,7 +9,6 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 
-
 namespace RateLimiting.Security.Auth.BasicAuth 
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
