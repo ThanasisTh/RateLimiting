@@ -3,6 +3,10 @@ using RateLimiting.Models.Random;
 using RateLimiting.Security.Entities;
 
 namespace RateLimiting.Data {
+    /// <summary>
+    /// The <see cref="DbContext"/> used to store and access instances of
+    /// <see cref="RateLimiting.Security.Entities.User"/> registered through "/register" 
+    /// </summary>
     public class RateLimitingContext : DbContext
     {
         private string _connection;

@@ -15,7 +15,6 @@ namespace RateLimiting.Controllers
     [Route("[controller]")]   
     public class RandomController : ControllerBase
     {
-        // private readonly RateLimitingContext _context;
         private IUserService _userService;
         private RateLimitingContext _context;
         

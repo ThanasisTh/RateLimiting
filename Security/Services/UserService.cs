@@ -12,6 +12,9 @@ using RateLimiting.Data;
 
 namespace RateLimiting.Security.Services
 {
+    /// <summary>
+    /// The service that takes care of handling <see cref="Security.Entities.User" /> related business logic. 
+    /// </summary>
     public interface IUserService
     {
         AuthenticateResponse Authenticate(AuthenticateRequest model);
@@ -20,11 +23,17 @@ namespace RateLimiting.Security.Services
         int consumeBandwidth(int Id, int bytes);
     }
 
+    /// <summary>
+    /// The service that takes care of handling <see cref="Security.Entities.User" /> related business logic. 
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly AppSettings _appSettings;
         private RateLimitingContext _rateLimitingContext;
 
+        /// <summary>
+        /// The service that takes care of handling <see cref="Security.Entities.User" /> related business logic. 
+        /// </summary>
         public UserService(IOptions<AppSettings> appSettings, RateLimitingContext rateLimitingContext)
         {
             _appSettings = appSettings.Value;

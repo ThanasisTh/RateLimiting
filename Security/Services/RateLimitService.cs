@@ -8,9 +8,16 @@ using RateLimiting.Security.Entities;
 
 namespace RateLimiting.Security.Services
 {
+    /// <summary>
+    /// The daemon-like <cref="IHostedService"/> that takes care of resetting the bandwidth for each client every 10 seconds
+    /// </summary>
     public class RateLimitService : IHostedService, IDisposable {
         private RateLimitingContext _rateLimitingContext; 
         private Timer _timer;
+        
+        /// <summary>
+        /// The daemon-like <cref="IHostedService"/> that takes care of resetting the bandwidth for each client every 10 seconds
+        /// </summary>
         public RateLimitService(RateLimitingContext rateLimitingContext) {
             _rateLimitingContext = rateLimitingContext;
         }

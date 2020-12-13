@@ -11,6 +11,9 @@ using RateLimiting.Security.Services;
 
 namespace RateLimiting.Security.JWT
 {
+    /// <summary>
+    /// Middleware handling the creation of JWTs, called to authorize a <see cref="User"/> after they have logged in with basic authentication. 
+    /// </summary>
     public class JwtMiddleware
     {
         private readonly RequestDelegate _next;

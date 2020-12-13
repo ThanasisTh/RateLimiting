@@ -10,6 +10,11 @@ using System.Text;
 
 namespace RateLimiting.Security.Auth.BasicAuth 
 {
+    /// <summary>
+    /// <para>Class implementing <see cref="Attribute"/> and <see cref="IAuthorizationFilter"/> for <see cref="RandomController"/>, 
+    /// filtering requests for authenticating registered instances of <see cref="User"/> using basic authentication.</para>
+    /// <para> Also handles setting up the response object to these requests. </para>
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class BasicAuthAttribute : Attribute, IAuthorizationFilter {
         public void OnAuthorization(AuthorizationFilterContext context)

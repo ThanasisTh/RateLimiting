@@ -8,6 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace RateLimiting.Security.Auth.JwtAuth
 {
+    /// <summary>
+    /// <para>Class implementing <see cref="Attribute"/> and <see cref="IAuthorizationFilter"/> for <see cref="RandomController"/>, 
+    /// filtering and authenticating requests for access to "/random" using a JWT. </para>
+    /// <para> Also handles setting up the response object to these requests. </para>
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class JwtAuthAttribute : Attribute, IAuthorizationFilter, IActionFilter
     {
