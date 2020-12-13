@@ -16,11 +16,12 @@ namespace RateLimiting.Security.Auth.JwtAuth
         public void OnActionExecuting(ActionExecutingContext context)
         {
             int len = 0;
-            var rateLimitService = context.HttpContext.RequestServices.GetRequiredService<IRateLimitService>(); 
+            var rateLimitService = context.HttpContext.RequestServices.GetRequiredService<IUserService>(); 
+            var user = (User)context.HttpContext.Items["User"];
             try {
                 len = Int32.Parse(context.HttpContext.Request.Query["len"]);
                 if (len > 0) {
-                    int remainingBandwidth = rateLimitService.processRequest(len);
+                    int remainingBandwidth = rateLimitService.consumeBandwidth(user, len);
                     if (remainingBandwidth < 0) {
                         ReturnRateExceededResult(context, remainingBandwidth);
                         return;

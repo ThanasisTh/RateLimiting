@@ -14,18 +14,10 @@ namespace RateLimiting.Controllers
     {
         // private readonly RateLimitingContext _context;
         private IUserService _userService;
-        private IRateLimitService _rateLimitService;
-        public IRateLimitService RateLimitService {
-            get{
-                return _rateLimitService;
-            }
-            set {}
-        }
         
-        public RandomController(IUserService userService, IRateLimitService rateLimitService)
+        public RandomController(IUserService userService)
         {
             _userService = userService;
-            _rateLimitService = rateLimitService;
         }
 
         [BasicAuth]

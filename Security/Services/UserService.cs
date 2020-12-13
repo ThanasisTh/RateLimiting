@@ -18,6 +18,7 @@ namespace RateLimiting.Security.Services
         IEnumerable<User> GetAll();
         User GetById(int id);
         bool isValidUser(string username, string password);
+        int consumeBandwidth(User user, int bytes);
     }
 
     public class UserService : IUserService
@@ -25,8 +26,9 @@ namespace RateLimiting.Security.Services
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
         private List<User> _users = new List<User>
         {
-            new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Password = "test" }
+            new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Bandwidth = 1024, Password = "test" }
         };
+        private int _limit = 1024;
 
         private readonly AppSettings _appSettings;
 
@@ -56,6 +58,24 @@ namespace RateLimiting.Security.Services
         public User GetById(int id)
         {
             return _users.FirstOrDefault(x => x.Id == id);
+        }
+
+        public int consumeBandwidth(User user, int bytes) {
+            if (user.Bandwidth >= bytes) {
+                user.Bandwidth -= bytes;
+                return user.Bandwidth;
+            };
+            return -1;
+        }
+
+        public int reportBandwidth(User user)
+        {
+            return user.Bandwidth;
+        }
+
+        private int resetBandwidth(User user) {
+            user.Bandwidth = _limit;
+            return user.Bandwidth;
         }
 
         // helper methods
