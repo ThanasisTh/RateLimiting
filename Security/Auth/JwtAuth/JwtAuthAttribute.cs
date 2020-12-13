@@ -21,12 +21,12 @@ namespace RateLimiting.Security.Auth.JwtAuth
             try {
                 len = Int32.Parse(context.HttpContext.Request.Query["len"]);
                 if (len > 0) {
-                    int remainingBandwidth = rateLimitService.consumeBandwidth(user, len);
+                    int remainingBandwidth = rateLimitService.consumeBandwidth(user.Id, len);
+                    context.HttpContext.Response.Headers["X-Rate-Limit"] = rateLimitService.GetById(user.Id).Bandwidth.ToString();
                     if (remainingBandwidth < 0) {
                         ReturnRateExceededResult(context, remainingBandwidth);
                         return;
                     }
-                    context.HttpContext.Response.Headers["X-Rate-Limit"] = remainingBandwidth.ToString();
                 }
             }
             catch (FormatException) {

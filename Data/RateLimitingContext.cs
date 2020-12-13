@@ -10,7 +10,11 @@ namespace RateLimiting.Data {
         {
         }
 
-        public DbSet<Item> Item { get; set; }
-        public DbSet<User> User {get; set;}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().Property(p => p.Bandwidth).HasDefaultValueSql("1024");
+        } 
+        
+        public DbSet<User> Users {get; set;}
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using RateLimiting.Data;
 using System.Security.Claims;
 using System.Text;
 using RateLimiting.Models.Authentication;
@@ -15,32 +16,33 @@ namespace RateLimiting.Security.Services
     public interface IUserService
     {
         AuthenticateResponse Authenticate(AuthenticateRequest model);
-        IEnumerable<User> GetAll();
         User GetById(int id);
         bool isValidUser(string username, string password);
-        int consumeBandwidth(User user, int bytes);
+        int consumeBandwidth(int Id, int bytes);
     }
 
     public class UserService : IUserService
     {
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<User> _users = new List<User>
-        {
-            new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Bandwidth = 1024, Password = "test" }
-        };
+        // private List<User> _users = new List<User>
+        // {
+        //     new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Bandwidth = 1024, Password = "test" }
+        // };
         private int _limit = 1024;
+        private List<User> _users = new List<User>{};
 
         private readonly AppSettings _appSettings;
+        private RateLimitingContext _rateLimitingContext;
 
-        public UserService(IOptions<AppSettings> appSettings)
+        public UserService(IOptions<AppSettings> appSettings, RateLimitingContext rateLimitingContext)
         {
             _appSettings = appSettings.Value;
+            _rateLimitingContext = rateLimitingContext;
         }
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
-            var user = _users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
-
+            var user = _rateLimitingContext.Users.ToList().FirstOrDefault(x => x.Username == model.Username && x.Password == model.Password);
             // return null if user not found
             if (user == null) return null;
 
@@ -50,19 +52,17 @@ namespace RateLimiting.Security.Services
             return new AuthenticateResponse(user, token);
         }
 
-        public IEnumerable<User> GetAll()
-        {
-            return _users;
-        }
-
         public User GetById(int id)
         {
-            return _users.FirstOrDefault(x => x.Id == id);
+            return _rateLimitingContext.Users.Find(id);
         }
 
-        public int consumeBandwidth(User user, int bytes) {
+        public int consumeBandwidth(int id, int bytes) {
+            var user = _rateLimitingContext.Users.Find(id);
             if (user.Bandwidth >= bytes) {
                 user.Bandwidth -= bytes;
+                _rateLimitingContext.Users.Update(user);
+                _rateLimitingContext.SaveChangesAsync();
                 return user.Bandwidth;
             };
             return -1;
