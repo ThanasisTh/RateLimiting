@@ -1,35 +1,50 @@
-// namespace RateLimiting.Security.Services
-// {
-//     public interface IRateLimitService
-//     {
-//         int processRequest(int bytes);
-//         int reportBandwidth();
-//     }
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using RateLimiting.Data;
+using RateLimiting.Security.Entities;
 
-//     public class RateLimitService : IRateLimitService
-//     {
-//         private int _limit = 1024;
-//         private int _bandwidth = 1024;
+namespace RateLimiting.Security.Services
+{
+    public class RateLimitService : IHostedService, IDisposable {
+        private RateLimitingContext _rateLimitingContext; 
+        private Timer _timer;
+        public RateLimitService(RateLimitingContext rateLimitingContext) {
+            _rateLimitingContext = rateLimitingContext;
+        }
 
-//         public RateLimitService() {}
+        public void Dispose()
+        {
+            _timer?.Dispose();
+        }
 
-//         public int processRequest(int bytes) {
-//             if (_bandwidth >= bytes) {
-//                 _bandwidth -= bytes;
-//                 return _bandwidth;
-//             };
-//             return -1;
-//         }
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            _timer = new System.Threading.Timer((e) => {
+                this.resetBandwidth();
+            }, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+            return Task.CompletedTask;
+        }
 
-//         public int reportBandwidth()
-//         {
-//             return _bandwidth;
-//         }
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
-//         private int resetBandwidth() {
-//             _bandwidth = _limit;
-//             return _bandwidth;
-//         }
+        
+        private void resetBandwidth() {
+            Console.WriteLine("resetting limit period...");
+            var users = _rateLimitingContext.Users.ToList();
 
-//     }
-// }
+            if (users == null) return;
+            
+            foreach (User user in users) {
+                user.Bandwidth = user._limit;
+                _rateLimitingContext.Users.Update(user);
+            }
+            _rateLimitingContext.SaveChangesAsync();
+        }
+    }
+}

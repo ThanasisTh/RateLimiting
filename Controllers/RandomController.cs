@@ -7,7 +7,7 @@ using RateLimiting.Security.Auth.JwtAuth;
 using RateLimiting.Models.Random;
 using Microsoft.AspNetCore.Authorization;
 using RateLimiting.Security.Entities;
-using System.Collections.Generic;
+using System;
 
 namespace RateLimiting.Controllers
 {
@@ -23,6 +23,7 @@ namespace RateLimiting.Controllers
         {
             _userService = userService;
             _context = context;
+            DateTime resetTime = DateTime.UtcNow.AddSeconds(100);
         }
 
 

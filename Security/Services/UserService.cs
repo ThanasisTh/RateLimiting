@@ -1,15 +1,14 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using RateLimiting.Data;
 using System.Security.Claims;
 using System.Text;
 using RateLimiting.Models.Authentication;
 using RateLimiting.Security.Entities;
 using RateLimiting.Models.Configuration;
+using RateLimiting.Data;
 
 namespace RateLimiting.Security.Services
 {
@@ -23,14 +22,6 @@ namespace RateLimiting.Security.Services
 
     public class UserService : IUserService
     {
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        // private List<User> _users = new List<User>
-        // {
-        //     new User { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Bandwidth = 1024, Password = "test" }
-        // };
-        private int _limit = 1024;
-        private List<User> _users = new List<User>{};
-
         private readonly AppSettings _appSettings;
         private RateLimitingContext _rateLimitingContext;
 
@@ -66,16 +57,6 @@ namespace RateLimiting.Security.Services
                 return user.Bandwidth;
             };
             return -1;
-        }
-
-        public int reportBandwidth(User user)
-        {
-            return user.Bandwidth;
-        }
-
-        private int resetBandwidth(User user) {
-            user.Bandwidth = _limit;
-            return user.Bandwidth;
         }
 
         // helper methods

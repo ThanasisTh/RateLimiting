@@ -7,6 +7,7 @@ using RateLimiting.Security.JWT;
 using RateLimiting.Models.Configuration;
 using Microsoft.EntityFrameworkCore;
 using RateLimiting.Data;
+using Microsoft.Extensions.Hosting;
 
 namespace RateLimiting
 {
@@ -33,6 +34,8 @@ namespace RateLimiting
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            
+            services.AddSingleton<IHostedService, RateLimitService>(s => new RateLimitService(new RateLimitingContext(null, "RateLimitingList") ));
         }
 
         // configure the HTTP request pipeline
