@@ -10,6 +10,8 @@
 
 * An admin can modify the rate limit for a specified user from the `"POST /random/modify"` endpoint 
 
+* The requests are executed asynchronously.
+
 * The app uses HSTS headers and HTTPS redirection to supplement Basic Authentication, but a port must be available for the middleware to redirect an insecure request to HTTPS. If no port is available redirection to HTTPS doesn't occur.
 
 ## Execution
