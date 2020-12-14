@@ -10,7 +10,7 @@
  This is a C# .Net Core project, it can be built & run instantly by importing it in Visual Studio (Code), or simply using `dotnet run` from the project's root directory.
 
 ## Testing
-During development I tested requests using Postman, I have included relevant requests in a .txt file.
+During development I tested requests using Postman, I have included 6 example requests (register, authenticate and random for 2 different users) in a Postman collection file.
 
 ## Assumptions
 * Using an in memory database to store users, let's assume we don't care about duplicate usernames/passwords. Basic Authentication succeeds as long as the provided credentials are valid.
