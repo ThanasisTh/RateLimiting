@@ -13,10 +13,10 @@
 * The app uses HSTS headers and HTTPS redirection to supplement Basic Authentication, but a port must be available for the middleware to redirect an insecure request to HTTPS. If no port is available redirection to HTTPS doesn't occur.
 
 ## Execution
- This is a C# .Net Core project, it can be built & run instantly by importing it in Visual Studio (Code), or simply using `dotnet run` from the project's root directory.
+ This is a C# .Net Core 3.1 project, it can be built & run instantly by importing it in Visual Studio (Code), or simply using `dotnet run` from the project's root directory.
 
 ## Testing
- During development I tested request functionality using Postman, I have included 6 example requests (register, authenticate and random for 2 different users) in a Postman collection file.
+ During development I tested request functionality using Postman, I have included 7 example requests (register, authenticate and random for 2 different users and the admin modify request) in a Postman collection file.
 
 ## Assumptions
 * Using an in memory database to store users, let's assume we don't care about duplicate usernames/passwords. Basic Authentication succeeds as long as the provided credentials are valid.
@@ -28,3 +28,9 @@
 * No regard for JWT amount per User.
 
 * We don't care about padding of the Base64 encoded random string
+
+## Inspiration 
+* https://jasonwatmore.com/post/2019/10/11/aspnet-core-3-jwt-authentication-tutorial-with-example-api#app-settings-json
+* https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-5.0&tabs=visual-studio-code#scaffold-a-controller
+* https://codeburst.io/adding-basic-authentication-to-an-asp-net-core-web-api-project-5439c4cf78ee
+* https://docs.microsoft.com/en-us/aspnet/web-api/overview/security/basic-authentication
