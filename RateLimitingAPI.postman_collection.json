@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJuYmYiOjE2MDc5MDQ2NTUsImV4cCI6MTYwNzkwNDk1NSwiaWF0IjoxNjA3OTA0NjU1fQ.rtrCgChqcbItN1ZbzXd79Z0yqUFkNaQaD2jCtKQFB4s",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJuYmYiOjE2MDc5NDU4MzksImV4cCI6MTYwNzk0NjEzOSwiaWF0IjoxNjA3OTQ1ODM5fQ.QZmobdimLs-rgmXoE6U5BOuNEa7Rf5njm-UYgLtlGEE",
 							"type": "string"
 						}
 					]
@@ -48,14 +48,14 @@
 			"response": []
 		},
 		{
-			"name": "https://localhost:5001/random?len=100",
+			"name": "Get randomness: use third",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYmYiOjE2MDc5NDUyMzksImV4cCI6MTYwNzk0NTUzOSwiaWF0IjoxNjA3OTQ1MjM5fQ.q2fFytu18WJ0kMqxYWxu-YblG6U7ajqysHAuASeXoG4",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJuYmYiOjE2MDc5NDk5NDIsImV4cCI6MTYwNzk1MDI0MiwiaWF0IjoxNjA3OTQ5OTQyfQ.61gpcLKgMllJQWoa3Oq-VHHegtD3Xe8ddSTj5-xQcgc",
 							"type": "string"
 						}
 					]
@@ -70,7 +70,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://localhost:5001/random?len=100",
+					"raw": "https://localhost:5001/random?len=1000",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -82,7 +82,7 @@
 					"query": [
 						{
 							"key": "len",
-							"value": "100"
+							"value": "1000"
 						}
 					]
 				}
@@ -137,7 +137,7 @@
 			"response": []
 		},
 		{
-			"name": "https://localhost:5001/random/authenticate",
+			"name": "Authenticate User: use second",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -213,7 +213,7 @@
 			"response": []
 		},
 		{
-			"name": "https://localhost:5001/random/register",
+			"name": "Register User: use first",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -242,7 +242,7 @@
 			"response": []
 		},
 		{
-			"name": "https://localhost:5001/random/modify",
+			"name": "Modify Rate: Use after a user has been registered, with the corresponding \"Id\"",
 			"request": {
 				"auth": {
 					"type": "basic",
