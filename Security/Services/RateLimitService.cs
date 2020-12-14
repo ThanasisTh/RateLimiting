@@ -20,6 +20,7 @@ namespace RateLimiting.Security.Services
         /// </summary>
         public RateLimitService(RateLimitingContext rateLimitingContext) {
             _rateLimitingContext = rateLimitingContext;
+            addAdminToDb();
         }
 
         public void Dispose()
@@ -40,6 +41,25 @@ namespace RateLimiting.Security.Services
             return Task.CompletedTask;
         }
 
+        private void addAdminToDb() {
+            User admin = new User();
+            admin.Id = 1;
+            admin.Username = "admin";
+            admin.Password = "admin";
+            _rateLimitingContext.Add(admin);
+            _rateLimitingContext.SaveChangesAsync();
+        }
+
+        public void changeLimit(int id, int limit) {
+            User user = (User) _rateLimitingContext.Users.Find(id);
+            
+            if (user == null) return;
+
+            user._limit = limit;
+            _rateLimitingContext.Users.Update(user);
+            
+            _rateLimitingContext.SaveChangesAsync();
+        }
         
         private void resetBandwidth() {
             Console.WriteLine("resetting limit period...");

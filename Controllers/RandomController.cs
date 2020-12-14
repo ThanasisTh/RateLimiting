@@ -8,6 +8,7 @@ using RateLimiting.Models.Random;
 using Microsoft.AspNetCore.Authorization;
 using RateLimiting.Security.Entities;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RateLimiting.Controllers
 {
@@ -15,6 +16,7 @@ namespace RateLimiting.Controllers
     [Route("[controller]")]   
     public class RandomController : ControllerBase
     {
+        // private readonly RateLimitingContext _context;
         private IUserService _userService;
         private RateLimitingContext _context;
         
@@ -39,12 +41,10 @@ namespace RateLimiting.Controllers
         }
 
         /// <summary>
-        /// Basic authentication login, requires Base64 encoded "username:password", generates JWT which lasts 5 minutes
+        /// Basic authentication login, requires username + password, generates JWT which lasts 5 minutes
         /// </summary>
-        /// <returns><para>An <see cref="Models.Authentication.AuthenticateResponse" /> instance, 
-        ///          containing a JWT token used to access "/random". </para>
-        ///          <para>The JWT expires after 5 minuts. </para>
-        /// </returns>
+        /// <returns>An <see cref="Models.Authentication.AuthenticateResponse" /> instance, 
+        /// containing a JWT token used to access the /random </returns>
         [BasicAuth]
         [HttpPost("authenticate")]
         public IActionResult Authenticate()
@@ -65,6 +65,18 @@ namespace RateLimiting.Controllers
         {
             await Task.Delay(100);
             return Ok(new { message = "Requested rate spent :)", random = new Item(len).random});
+        }
+
+        /// <summary>
+        /// "Admin access" endpoint exposing the method that modifies a specied user's rate limit.
+        /// </summary>
+        /// <param name="id">The id of the user for whom the limit will change.</param>
+        /// <param name="limit">The new rate limit for the specified user.</param>
+        public async Task<IActionResult> modifyLimit(int id, int limit) {
+            var rateLimitService = this.HttpContext.RequestServices.GetRequiredService<RateLimitService>();
+            rateLimitService.changeLimit(id, limit);
+            await Task.Delay(100);
+            return Ok();
         }
     }
 }
