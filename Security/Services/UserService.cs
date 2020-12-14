@@ -21,6 +21,7 @@ namespace RateLimiting.Security.Services
         User GetById(int id);
         bool isValidUser(string username, string password);
         int consumeBandwidth(int Id, int bytes);
+        void changeLimit(int id, int limit);
     }
 
     /// <summary>
@@ -58,7 +59,10 @@ namespace RateLimiting.Security.Services
         }
 
         public int consumeBandwidth(int id, int bytes) {
-            var user = _rateLimitingContext.Users.Find(id);
+            User user = (User) _rateLimitingContext.Users.Find(id);
+            
+            if (user == null) return -1;
+
             if (user.Bandwidth >= bytes) {
                 user.Bandwidth -= bytes;
                 _rateLimitingContext.Users.Update(user);
@@ -68,6 +72,16 @@ namespace RateLimiting.Security.Services
             return -1;
         }
 
+        public void changeLimit(int id, int limit) {
+            User user = (User) _rateLimitingContext.Users.Find(id);
+            
+            if (user == null) return;
+
+            user._limit = limit;
+            _rateLimitingContext.Users.Update(user);
+            
+            _rateLimitingContext.SaveChangesAsync();
+        }
         // helper methods
 
         private string generateJwtToken(User user)

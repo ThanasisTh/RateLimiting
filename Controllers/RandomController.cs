@@ -24,7 +24,6 @@ namespace RateLimiting.Controllers
         {
             _userService = userService;
             _context = context;
-            DateTime resetTime = DateTime.UtcNow.AddSeconds(100);
         }
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace RateLimiting.Controllers
         /// </summary>
         /// <param name="user">A <see cref="RateLimiting.Security.Entities.User"/> instance</param>
         [AllowAnonymous]
-        [HttpPostAttribute("register")]
+        [HttpPost("register")]
         public async Task<ActionResult<User>> registerUser(User user) {
             user.Bandwidth = 1024;
             _context.Users.Add(user);
@@ -46,7 +45,7 @@ namespace RateLimiting.Controllers
         /// <returns>An <see cref="Models.Authentication.AuthenticateResponse" /> instance, 
         /// containing a JWT token used to access the /random </returns>
         [BasicAuth]
-        [HttpPost("authenticate")]
+        [HttpGet("authenticate")]
         public IActionResult Authenticate()
         {
             return Ok();
@@ -72,9 +71,10 @@ namespace RateLimiting.Controllers
         /// </summary>
         /// <param name="id">The id of the user for whom the limit will change.</param>
         /// <param name="limit">The new rate limit for the specified user.</param>
-        public async Task<IActionResult> modifyLimit(int id, int limit) {
-            var rateLimitService = this.HttpContext.RequestServices.GetRequiredService<RateLimitService>();
-            rateLimitService.changeLimit(id, limit);
+        [BasicAuth]
+        [HttpPut("modify")]
+        public async Task<IActionResult> modifyLimit(User user) {
+            _userService.changeLimit(user.Id, user.Bandwidth);
             await Task.Delay(100);
             return Ok();
         }

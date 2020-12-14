@@ -49,19 +49,8 @@ namespace RateLimiting.Security.Services
             _rateLimitingContext.Add(admin);
             _rateLimitingContext.SaveChangesAsync();
         }
-
-        public void changeLimit(int id, int limit) {
-            User user = (User) _rateLimitingContext.Users.Find(id);
-            
-            if (user == null) return;
-
-            user._limit = limit;
-            _rateLimitingContext.Users.Update(user);
-            
-            _rateLimitingContext.SaveChangesAsync();
-        }
         
-        private void resetBandwidth() {
+        private async void resetBandwidth() {
             Console.WriteLine("resetting limit period...");
             var users = _rateLimitingContext.Users.ToList();
 
@@ -71,7 +60,7 @@ namespace RateLimiting.Security.Services
                 user.Bandwidth = user._limit;
                 _rateLimitingContext.Users.Update(user);
             }
-            _rateLimitingContext.SaveChangesAsync();
+            await _rateLimitingContext.SaveChangesAsync();
         }
     }
 }

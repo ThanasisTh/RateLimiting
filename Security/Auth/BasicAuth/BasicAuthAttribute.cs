@@ -14,11 +14,25 @@ namespace RateLimiting.Security.Auth.BasicAuth
     /// <para>Class implementing <see cref="Attribute"/> and <see cref="IAuthorizationFilter"/> for <see cref="RandomController"/>, 
     /// filtering requests for authenticating registered instances of <see cref="User"/> using basic authentication.</para>
     /// <para> Also handles setting up the response object to these requests. </para>
+    /// 
+    /// <TODO> Filter for admin account </TODO> 
+    /// 
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class BasicAuthAttribute : Attribute, IAuthorizationFilter {
+    public class BasicAuthAttribute : Attribute, IAuthorizationFilter, IActionFilter {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            if (context.ActionDescriptor.DisplayName.Split(".", 4)[3].Split(" ", 2)[0] == nameof(RateLimiting.Controllers.RandomController.modifyLimit)) {
+                string authHeader = context.HttpContext.Request.Headers["Authorization"];
+                var credentials = getCredentials(authHeader);
+                if (credentials.Length == 2)
+                {
+                    if (IsAuthorized(context, credentials[0], credentials[1]))
+                    {
+                        return;
+                    }
+                }
+            }
             try
             {
                 string authHeader = context.HttpContext.Request.Headers["Authorization"];
@@ -77,6 +91,15 @@ namespace RateLimiting.Security.Auth.BasicAuth
                 }
             }
             return null;
+        }
+
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+        }
+
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+            
         }
     }
 

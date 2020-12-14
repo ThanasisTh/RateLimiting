@@ -55,7 +55,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYmYiOjE2MDc5MDQ2NDYsImV4cCI6MTYwNzkwNDk0NiwiaWF0IjoxNjA3OTA0NjQ2fQ.z4uxbN2D3SmFCLq830UwJrnEqK0VC6Lx-6u9-4ielvc",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYmYiOjE2MDc5NDUyMzksImV4cCI6MTYwNzk0NTUzOSwiaWF0IjoxNjA3OTQ1MjM5fQ.q2fFytu18WJ0kMqxYWxu-YblG6U7ajqysHAuASeXoG4",
 							"type": "string"
 						}
 					]
@@ -91,6 +91,9 @@
 		},
 		{
 			"name": "https://localhost:5001/random/authenticate",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -107,7 +110,7 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -135,6 +138,9 @@
 		},
 		{
 			"name": "https://localhost:5001/random/authenticate",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -151,7 +157,7 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -230,6 +236,50 @@
 					"path": [
 						"random",
 						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:5001/random/modify",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\": 2,\r\n    \"Bandwidth\": 3000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/random/modify",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"random",
+						"modify"
 					]
 				}
 			},
